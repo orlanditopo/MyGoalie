@@ -41,12 +41,13 @@ Rip
 
 Mygoalie is open
 
-
 i want people to be able to be able to show for themselves 
-
-
 
 people who are wokring for same goals can come to eachother and give tips to eachother with search 
 
 easy remembering, : you forgot what you meal prepped this one month and you can go back to it and find recipe, what and how you cooked it
 
+
+  As of 5/24
+  
+  Ive stopped working on the site, but from time to time id like to come back and continue working on it.. 
