@@ -1,0 +1,33 @@
+# Database files
+*.sql
+*.sqlite
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# Uploaded files
+uploads/
+src/assets/uploads/
+
+# Dependencies
+vendor/
+node_modules/
+
+# Configuration files with sensitive data
+src/includes/db.php 
