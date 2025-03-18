@@ -32,7 +32,7 @@ include dirname(__DIR__) . '/templates/header.php';
                    END as is_own_goal
             FROM posts p 
             JOIN users u ON p.user_id = u.id 
-            WHERE p.user_id = ? 
+            WHERE (p.user_id = ? 
                OR p.user_id IN (
                    SELECT CASE 
                        WHEN user_id = ? THEN friend_id
@@ -41,7 +41,8 @@ include dirname(__DIR__) . '/templates/header.php';
                    FROM friendships
                    WHERE (user_id = ? OR friend_id = ?)
                    AND status = 'accepted'
-               )
+               ))
+            AND p.deleted_at IS NULL
             ORDER BY p.created_at DESC
         ");
         $stmt->bind_param("iiiii", $_SESSION['user_id'], $_SESSION['user_id'], $_SESSION['user_id'], $_SESSION['user_id'], $_SESSION['user_id']);
@@ -66,7 +67,31 @@ include dirname(__DIR__) . '/templates/header.php';
                         </div>
                     </div>
                     
-                    <h3><a href="view_post.php?id=<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['title']); ?></a></h3>
+                    <div class="post-header">
+                        <h3>
+                            <?php if (empty($post['parent_id'])): ?>
+                                <span class="goalie-indicator">Goalie</span>
+                            <?php else: ?>
+                                <span class="thread-type <?php echo $post['thread_type']; ?>"><?php echo ucfirst($post['thread_type']); ?></span>
+                            <?php endif; ?>
+                            <a href="<?php echo BASE_URL; ?>/src/pages/view_post.php?id=<?php echo $post['id']; ?>">
+                                <?php echo htmlspecialchars($post['title']); ?>
+                            </a>
+                        </h3>
+                        
+                        <?php if ($post['is_own_goal']): ?>
+                            <div class="goal-actions" style="position: relative;">
+                                <button class="dropdown-toggle" aria-label="Goal Actions Menu">⋮</button>
+                                <div class="dropdown-menu" role="menu">
+                                    <a href="<?php echo BASE_URL; ?>/src/pages/edit_post.php?id=<?php echo $post['id']; ?>" role="menuitem">Edit</a>
+                                    <a href="<?php echo BASE_URL; ?>/src/actions/delete_post.php?id=<?php echo $post['id']; ?>" onclick="return confirm('Are you sure you want to delete this post?');" role="menuitem">Delete</a>
+                                    <?php if (empty($post['parent_id'])): ?>
+                                        <a href="<?php echo BASE_URL; ?>/src/pages/view_post.php?id=<?php echo $post['id']; ?>#add-thread" role="menuitem">Add Update</a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                     
                     <?php if (!empty($post['image_path'])): ?>
                         <div class="goal-image" onclick="openImageModal('<?php echo BASE_URL . '/src/' . htmlspecialchars($post['image_path']); ?>')">
@@ -100,14 +125,6 @@ include dirname(__DIR__) . '/templates/header.php';
                             <pre><code><?php echo htmlspecialchars($post['code_snippet']); ?></code></pre>
                         </div>
                     <?php endif; ?>
-                    
-                    <div class="goal-actions">
-                        <a href="view_post.php?id=<?php echo $post['id']; ?>" class="btn btn-primary">View Details</a>
-                        <?php if ($post['is_own_goal']): ?>
-                            <a href="edit_post.php?id=<?php echo $post['id']; ?>" class="btn btn-secondary">Edit</a>
-                            <a href="../actions/delete_post.php?id=<?php echo $post['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this goal?')">Delete</a>
-                        <?php endif; ?>
-                    </div>
                 </div>
                 <?php
             }
@@ -165,6 +182,47 @@ document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeImageModal();
     }
+});
+
+// Ensure dropdowns work properly
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent the click from bubbling
+            
+            // Close all other dropdowns first
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                if (menu !== this.nextElementSibling) {
+                    menu.classList.remove('show');
+                }
+            });
+            
+            // Toggle this dropdown
+            const dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.toggle('show');
+            
+            // Position the dropdown to ensure it's visible
+            const rect = dropdownMenu.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            
+            // If dropdown would go off bottom of screen, position it above the toggle
+            if (rect.bottom > viewportHeight) {
+                dropdownMenu.style.top = 'auto';
+                dropdownMenu.style.bottom = '100%';
+            }
+        });
+    });
+    
+    // Close dropdowns when clicking elsewhere
+    document.addEventListener('click', function(e) {
+        if (!e.target.matches('.dropdown-toggle')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        }
+    });
 });
 </script>
 
