@@ -36,6 +36,13 @@ include dirname(__DIR__) . '/templates/header.php';
                     ?>
                     <div class="goal-card">
                         <h3><a href="view_post.php?id=<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['title']); ?></a></h3>
+                        
+                        <?php if (!empty($post['image_path'])): ?>
+                            <div class="goal-image">
+                                <img src="<?php echo BASE_URL . '/src/' . htmlspecialchars($post['image_path']); ?>" alt="Goal image">
+                            </div>
+                        <?php endif; ?>
+                        
                         <p><?php echo htmlspecialchars(substr($post['content'], 0, 150)) . (strlen($post['content']) > 150 ? '...' : ''); ?></p>
                         
                         <?php if (!empty($post['github_repo'])): ?>
@@ -89,6 +96,13 @@ include dirname(__DIR__) . '/templates/header.php';
                             <span><?php echo htmlspecialchars($post['username']); ?></span>
                         </div>
                         <h3><a href="view_post.php?id=<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['title']); ?></a></h3>
+                        
+                        <?php if (!empty($post['image_path'])): ?>
+                            <div class="goal-image">
+                                <img src="<?php echo BASE_URL . '/src/' . htmlspecialchars($post['image_path']); ?>" alt="Goal image">
+                            </div>
+                        <?php endif; ?>
+                        
                         <p><?php echo htmlspecialchars(substr($post['content'], 0, 150)) . (strlen($post['content']) > 150 ? '...' : ''); ?></p>
                         
                         <?php if (!empty($post['github_repo'])): ?>

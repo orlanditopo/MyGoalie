@@ -34,7 +34,7 @@ include dirname(__DIR__) . '/templates/header.php';
             </div>
         <?php endif; ?>
         
-        <form action="../actions/submit_post.php" method="post">
+        <form action="../actions/submit_post.php" method="post" enctype="multipart/form-data">
             <div class="input-field">
                 <label for="title">Goal Title</label>
                 <input type="text" id="title" name="title" required>
@@ -53,6 +53,12 @@ include dirname(__DIR__) . '/templates/header.php';
                     <option value="in-progress">In Progress</option>
                     <option value="completed">Completed</option>
                 </select>
+            </div>
+            
+            <div class="input-field">
+                <label for="image">Image (optional)</label>
+                <input type="file" id="image" name="image" accept="image/*">
+                <small>Add an image to illustrate your goal (max 5MB).</small>
             </div>
             
             <div class="github-section">

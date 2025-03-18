@@ -137,6 +137,7 @@ button[type="submit"]:hover {
     max-width: 800px;
     margin: 2rem auto;
     padding: 0 1rem;
+    overflow-y: auto;
 }
 
 .profile-header {
@@ -155,6 +156,7 @@ button[type="submit"]:hover {
     border-radius: 50%;
     margin-right: 2rem;
     object-fit: cover;
+    max-width: 100%;
 }
 
 .profile-info {
@@ -550,4 +552,73 @@ button[type="submit"]:hover {
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
     color: #6c757d;
+}
+
+/* Page Containers with Scrolling */
+.profile-container, .post-container, .create-post-container, .friends-container, .dashboard-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    overflow-y: auto;
+}
+
+/* Goal Images */
+.goal-image {
+    margin: 1rem 0;
+    border-radius: 4px;
+    overflow: hidden;
+    max-height: 200px;
+}
+
+.goal-image img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.post-image {
+    margin: 1.5rem 0;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 100%;
+    text-align: center;
+}
+
+.post-image img {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+}
+
+/* Ensure the body allows scrolling */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
+/* Ensure all sections have proper spacing */
+.profile-header, .post-header, .github-section, .post-updates, .add-update {
+    margin-bottom: 2rem;
+}
+
+/* File Upload Styling */
+input[type="file"] {
+    padding: 0.5rem 0;
+    width: 100%;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: background-color 0.3s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #e9ecef;
 } 

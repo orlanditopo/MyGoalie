@@ -64,6 +64,12 @@ include dirname(__DIR__) . '/templates/header.php';
         <div class="post-content">
             <p><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
             
+            <?php if (!empty($post['image_path'])): ?>
+                <div class="post-image">
+                    <img src="<?php echo BASE_URL . '/src/' . htmlspecialchars($post['image_path']); ?>" alt="Goal image">
+                </div>
+            <?php endif; ?>
+            
             <?php if ($has_github): ?>
                 <div class="github-link">
                     <h3>GitHub Repository</h3>
@@ -91,6 +97,12 @@ include dirname(__DIR__) . '/templates/header.php';
                         </div>
                         <div class="update-content">
                             <p><?php echo nl2br(htmlspecialchars($update['content'])); ?></p>
+                            
+                            <?php if (!empty($update['image_path'])): ?>
+                                <div class="post-image">
+                                    <img src="<?php echo BASE_URL . '/src/' . htmlspecialchars($update['image_path']); ?>" alt="Update image">
+                                </div>
+                            <?php endif; ?>
                             
                             <?php if (!empty($update['github_commit'])): ?>
                                 <div class="github-commit">
@@ -122,12 +134,18 @@ include dirname(__DIR__) . '/templates/header.php';
                     </div>
                 <?php endif; ?>
                 
-                <form action="../actions/add_update.php" method="post">
+                <form action="../actions/add_update.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
                     
                     <div class="input-field">
                         <label for="content">Update Content</label>
                         <textarea id="content" name="content" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label for="image">Image (optional)</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                        <small>Add an image to show your progress (max 5MB).</small>
                     </div>
                     
                     <?php if ($has_github): ?>
