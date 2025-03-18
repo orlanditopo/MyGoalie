@@ -1,19 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form action="login_action.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="submit" value="Login">
-        </form>
-    </div>
-</body>
-</html>
+<?php
+require_once 'src/includes/config.php';
+require_once 'src/includes/functions.php';
+
+// Include header
+include 'src/templates/header.php';
+?>
+
+<div class="welcome-section">
+    <h1>Welcome to MyGoalie</h1>
+    <p>Track your goals, share your achievements, and connect with others on their journey.</p>
+    
+    <?php if (!is_logged_in()): ?>
+        <div class="cta-buttons">
+            <a href="<?php echo BASE_URL; ?>/src/auth/register.php" class="btn btn-primary">Get Started</a>
+            <a href="<?php echo BASE_URL; ?>/src/auth/login.php" class="btn btn-secondary">Login</a>
+        </div>
+    <?php else: ?>
+        <div class="cta-buttons">
+            <a href="<?php echo BASE_URL; ?>/src/pages/dashboard.php" class="btn btn-primary">Go to Dashboard</a>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php
+// Include footer
+include 'src/templates/footer.php';
+?>
