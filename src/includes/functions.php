@@ -30,6 +30,24 @@ function require_login() {
 }
 
 /**
+ * Check if user is an admin
+ */
+function is_admin() {
+    if (!is_logged_in()) {
+        return false;
+    }
+    
+    global $conn;
+    $stmt = $conn->prepare("SELECT is_admin FROM users WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    
+    return $user && isset($user['is_admin']) && $user['is_admin'] == 1;
+}
+
+/**
  * Get user data
  */
 function get_user_data($user_id) {

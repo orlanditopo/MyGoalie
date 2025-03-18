@@ -12,8 +12,14 @@ include dirname(__DIR__) . '/templates/header.php';
 <div class="dashboard-container">
     <div class="dashboard-header">
         <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-        <a href="<?php echo BASE_URL; ?>/src/actions/create_post.php" class="btn btn-primary">Create New Goal</a>
+        <a href="<?php echo BASE_URL; ?>/src/pages/create_post.php" class="btn btn-primary">Create New Goal</a>
     </div>
+
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="success-message">
+            <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+        </div>
+    <?php endif; ?>
 
     <div class="dashboard-content">
         <div class="goals-section">
@@ -29,21 +35,31 @@ include dirname(__DIR__) . '/templates/header.php';
                 while ($post = $result->fetch_assoc()) {
                     ?>
                     <div class="goal-card">
-                        <h3><?php echo htmlspecialchars($post['title']); ?></h3>
-                        <p><?php echo htmlspecialchars($post['content']); ?></p>
+                        <h3><a href="view_post.php?id=<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['title']); ?></a></h3>
+                        <p><?php echo htmlspecialchars(substr($post['content'], 0, 150)) . (strlen($post['content']) > 150 ? '...' : ''); ?></p>
+                        
+                        <?php if (!empty($post['github_repo'])): ?>
+                            <div class="github-integration">
+                                <a href="https://github.com/<?php echo htmlspecialchars($post['github_repo']); ?>" target="_blank" class="github-badge">
+                                    <span>GitHub: <?php echo htmlspecialchars($post['github_repo']); ?></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        
                         <div class="goal-meta">
                             <span class="date"><?php echo format_date($post['created_at']); ?></span>
                             <span class="status <?php echo $post['status']; ?>"><?php echo ucfirst($post['status']); ?></span>
                         </div>
                         <div class="goal-actions">
-                            <a href="<?php echo BASE_URL; ?>/src/actions/edit_post.php?id=<?php echo $post['id']; ?>" class="btn btn-secondary">Edit</a>
-                            <a href="<?php echo BASE_URL; ?>/src/actions/delete_post.php?id=<?php echo $post['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this goal?')">Delete</a>
+                            <a href="view_post.php?id=<?php echo $post['id']; ?>" class="btn btn-primary">View</a>
+                            <a href="edit_post.php?id=<?php echo $post['id']; ?>" class="btn btn-secondary">Edit</a>
+                            <a href="../actions/delete_post.php?id=<?php echo $post['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this goal?')">Delete</a>
                         </div>
                     </div>
                     <?php
                 }
             } else {
-                echo '<p class="no-goals">You haven\'t created any goals yet. <a href="' . BASE_URL . '/src/actions/create_post.php">Create your first goal!</a></p>';
+                echo '<p class="no-goals">You haven\'t created any goals yet. <a href="create_post.php">Create your first goal!</a></p>';
             }
             ?>
         </div>
@@ -57,7 +73,7 @@ include dirname(__DIR__) . '/templates/header.php';
                 JOIN users u ON p.user_id = u.id 
                 JOIN friendships f ON (f.user_id = ? AND f.friend_id = p.user_id) 
                 OR (f.friend_id = ? AND f.user_id = p.user_id)
-                WHERE p.status = 'public'
+                WHERE f.status = 'accepted'
                 ORDER BY p.created_at DESC
             ");
             $stmt->bind_param("ii", $_SESSION['user_id'], $_SESSION['user_id']);
@@ -69,20 +85,32 @@ include dirname(__DIR__) . '/templates/header.php';
                     ?>
                     <div class="goal-card">
                         <div class="goal-author">
-                            <img src="<?php echo get_profile_image($post['user_id']); ?>" alt="Profile" class="profile-image">
+                            <img src="<?php echo get_profile_image($post['user_id']); ?>" alt="Profile" class="profile-image-small">
                             <span><?php echo htmlspecialchars($post['username']); ?></span>
                         </div>
-                        <h3><?php echo htmlspecialchars($post['title']); ?></h3>
-                        <p><?php echo htmlspecialchars($post['content']); ?></p>
+                        <h3><a href="view_post.php?id=<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['title']); ?></a></h3>
+                        <p><?php echo htmlspecialchars(substr($post['content'], 0, 150)) . (strlen($post['content']) > 150 ? '...' : ''); ?></p>
+                        
+                        <?php if (!empty($post['github_repo'])): ?>
+                            <div class="github-integration">
+                                <a href="https://github.com/<?php echo htmlspecialchars($post['github_repo']); ?>" target="_blank" class="github-badge">
+                                    <span>GitHub: <?php echo htmlspecialchars($post['github_repo']); ?></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        
                         <div class="goal-meta">
                             <span class="date"><?php echo format_date($post['created_at']); ?></span>
                             <span class="status <?php echo $post['status']; ?>"><?php echo ucfirst($post['status']); ?></span>
+                        </div>
+                        <div class="goal-actions">
+                            <a href="view_post.php?id=<?php echo $post['id']; ?>" class="btn btn-primary">View</a>
                         </div>
                     </div>
                     <?php
                 }
             } else {
-                echo '<p class="no-goals">No friends\' goals to display. <a href="' . BASE_URL . '/src/pages/friends.php">Find some friends!</a></p>';
+                echo '<p class="no-goals">No friends\' goals to display. <a href="friends.php">Find some friends!</a></p>';
             }
             ?>
         </div>

@@ -1,45 +1,39 @@
 <?php
-session_start();
+require_once dirname(__DIR__) . '/includes/config.php';
+require_once dirname(__DIR__) . '/includes/functions.php';
 
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
-    header("Location: index.php");
-    exit;
+// Require login
+require_login();
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: ../pages/dashboard.php");
+    exit();
 }
 
-require_once 'db.php';
+// Get form data
+$title = trim($_POST['title']);
+$content = trim($_POST['content']);
+$status = $_POST['status'];
+$github_repo = isset($_POST['github_repo']) ? trim($_POST['github_repo']) : '';
+$code_snippet = isset($_POST['code_snippet']) ? trim($_POST['code_snippet']) : '';
 
-$user_id = $_SESSION['user_id'];
-$content = $_POST['content'];
-$image_path = '';
-
-if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-    $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-    // Check if the file is an image
-    $check = getimagesize($_FILES["image"]["tmp_name"]);
-    if ($check === false) {
-        echo "File is not an image.";
-        exit;
-    }
-
-    // Save the image in the 'uploads' folder
-    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        $image_path = $target_file;
-    } else {
-        echo "Error uploading the image.";
-        exit;
-    }
+// Basic validation
+if (empty($title) || empty($content)) {
+    $_SESSION['error_message'] = "Title and content are required.";
+    header("Location: ../pages/create_post.php");
+    exit();
 }
 
-$sql = "INSERT INTO posts (user_id, content, image_path) VALUES ('$user_id', '$content', '$image_path')";
+// Insert post into database
+$stmt = $conn->prepare("INSERT INTO posts (user_id, title, content, status, github_repo, code_snippet) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("isssss", $_SESSION['user_id'], $title, $content, $status, $github_repo, $code_snippet);
 
-if ($conn->query($sql) === TRUE) {
-    echo "Post submitted successfully. <a href='dashboard.php'>Go back to dashboard</a>";
+if ($stmt->execute()) {
+    $_SESSION['success_message'] = "Goal created successfully!";
+    header("Location: ../pages/dashboard.php");
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    $_SESSION['error_message'] = "Failed to create goal. Please try again.";
+    header("Location: ../pages/create_post.php");
 }
-
-$conn->close();
+exit();
 ?>

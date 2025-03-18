@@ -1,10 +1,10 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "zxcvbnm@0987";
-$dbname = "social_media_db";
+$host = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'mygoalie';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($host, $username, $password, $database);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

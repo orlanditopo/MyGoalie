@@ -1,0 +1,106 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.login-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.input-field {
+    margin-bottom: 1rem;
+}
+
+.input-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+p {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.error-messages {
+    background-color: #fff3f3;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.error {
+    color: #d32f2f;
+    margin: 0.5rem 0;
+}
+
+.success-message {
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #2e7d32;
+} 
