@@ -65,8 +65,8 @@ include dirname(__DIR__) . '/templates/header.php';
             <p><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
             
             <?php if (!empty($post['image_path'])): ?>
-                <div class="post-image">
-                    <img src="<?php echo BASE_URL . '/src/' . htmlspecialchars($post['image_path']); ?>" alt="Goal image">
+                <div class="post-image" onclick="openImageModal('<?php echo BASE_URL . '/src/' . htmlspecialchars($post['image_path']); ?>')">
+                    <img src="<?php echo BASE_URL . '/src/' . htmlspecialchars($post['image_path']); ?>" alt="Post image">
                 </div>
             <?php endif; ?>
             
@@ -99,7 +99,7 @@ include dirname(__DIR__) . '/templates/header.php';
                             <p><?php echo nl2br(htmlspecialchars($update['content'])); ?></p>
                             
                             <?php if (!empty($update['image_path'])): ?>
-                                <div class="post-image">
+                                <div class="update-image" onclick="openImageModal('<?php echo BASE_URL . '/src/' . htmlspecialchars($update['image_path']); ?>')">
                                     <img src="<?php echo BASE_URL . '/src/' . htmlspecialchars($update['image_path']); ?>" alt="Update image">
                                 </div>
                             <?php endif; ?>
@@ -193,6 +193,42 @@ include dirname(__DIR__) . '/templates/header.php';
         </div>
     </div>
 </div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="image-modal">
+    <span class="close-modal" onclick="closeImageModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+
+<script>
+// Image modal functions
+function openImageModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    
+    modal.style.display = 'flex';
+    modalImg.src = imageSrc;
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').style.display = 'none';
+}
+
+// Close modal when clicking outside the image
+window.onclick = function(event) {
+    const modal = document.getElementById('imageModal');
+    if (event.target === modal) {
+        closeImageModal();
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeImageModal();
+    }
+});
+</script>
 
 <?php
 // Include footer
