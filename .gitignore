@@ -30,4 +30,25 @@ vendor/
 node_modules/
 
 # Configuration files with sensitive data
-src/includes/db.php 
+src/includes/db.php
+**/config*.php
+
+# Credentials and API keys
+**/*credentials*.php
+**/*keys*.php
+**/*token*.php
+**/*secret*.php
+
+# Temporary test scripts
+*_test.php
+*_preview.php
+*_temp.php
+test_*.php
+preview_*.php
+temp_*.php
+*_local.php
+local_*.php
+
+# Personal configuration files
+**/*_personal.*
+**/personal_*.* 
