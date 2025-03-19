@@ -30,9 +30,10 @@ require_once dirname(__DIR__) . '/includes/functions.php';
                     <ul class="nav-links">
                         <?php if (is_logged_in()): ?>
                             <li><a href="<?php echo BASE_URL; ?>/src/pages/dashboard.php">Dashboard</a></li>
-                            <li><a href="<?php echo BASE_URL; ?>/src/pages/create_post.php">New Goal</a></li>
-                            <li><a href="<?php echo BASE_URL; ?>/src/pages/friends.php">Friends</a></li>
+                            <li><a href="<?php echo BASE_URL; ?>/src/pages/discover.php">Discover</a></li>
                             <li><a href="<?php echo BASE_URL; ?>/src/pages/profile.php">Profile</a></li>
+                            <li><a href="<?php echo BASE_URL; ?>/src/pages/friends.php">Friends</a></li>
+                            <li><a href="<?php echo BASE_URL; ?>/src/pages/create_post.php">New Goal</a></li>
                             <li><a href="<?php echo BASE_URL; ?>/src/actions/logout.php">Logout</a></li>
                         <?php else: ?>
                             <li><a href="<?php echo BASE_URL; ?>/src/pages/login.php">Login</a></li>

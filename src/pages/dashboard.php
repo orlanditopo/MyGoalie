@@ -12,12 +12,24 @@ include dirname(__DIR__) . '/templates/header.php';
 <div class="dashboard-container">
     <div class="dashboard-header">
         <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-        <a href="<?php echo BASE_URL; ?>/src/pages/create_post.php" class="btn btn-primary">Create New Goal</a>
+        <div class="feed-actions">
+            <a href="<?php echo BASE_URL; ?>/src/pages/create_post.php" class="btn btn-primary">Create New Goal</a>
+            <div class="feed-filter">
+                <a href="<?php echo BASE_URL; ?>/src/pages/dashboard.php" class="btn btn-primary">My Feed</a>
+                <a href="<?php echo BASE_URL; ?>/src/pages/discover.php" class="btn btn-secondary">Discover</a>
+            </div>
+        </div>
     </div>
 
     <?php if (isset($_SESSION['success_message'])): ?>
         <div class="success-message">
             <?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="error-message">
+            <?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?>
         </div>
     <?php endif; ?>
 
@@ -32,16 +44,21 @@ include dirname(__DIR__) . '/templates/header.php';
                    END as is_own_goal
             FROM posts p 
             JOIN users u ON p.user_id = u.id 
-            WHERE (p.user_id = ? 
-               OR p.user_id IN (
-                   SELECT CASE 
-                       WHEN user_id = ? THEN friend_id
-                       ELSE user_id
-                   END
-                   FROM friendships
-                   WHERE (user_id = ? OR friend_id = ?)
-                   AND status = 'accepted'
-               ))
+            WHERE (
+                p.user_id = ? 
+                OR (
+                    p.user_id IN (
+                        SELECT CASE 
+                            WHEN user_id = ? THEN friend_id
+                            ELSE user_id
+                        END
+                        FROM friendships
+                        WHERE (user_id = ? OR friend_id = ?)
+                        AND status = 'accepted'
+                    )
+                    AND (p.privacy = 'public' OR p.privacy = 'friends')
+                )
+            )
             AND p.deleted_at IS NULL
             ORDER BY p.created_at DESC
         ");

@@ -99,7 +99,7 @@ button[type="submit"]:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .goals-section, .friends-section {
@@ -1323,4 +1323,41 @@ body.dark-mode button {
 
 body.dark-mode .code-snippet {
     background-color: #1e1e1e;
+}
+
+/* Feed actions and filters */
+.feed-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.feed-filter {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Privacy indicators */
+.privacy-indicator {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    text-transform: uppercase;
+}
+
+.privacy-public {
+    background-color: #d1ffd1;
+    color: #2a6426;
+}
+
+.privacy-friends {
+    background-color: #ffe8cc;
+    color: #8a4e00;
+}
+
+.privacy-private {
+    background-color: #f0f0f0;
+    color: #666;
 } 

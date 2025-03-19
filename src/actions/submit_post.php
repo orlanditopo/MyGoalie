@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $title = trim($_POST['title']);
 $content = trim($_POST['content']);
 $status = $_POST['status'];
+$privacy = $_POST['privacy'];
 $github_repo = isset($_POST['github_repo']) ? trim($_POST['github_repo']) : '';
 $code_snippet = isset($_POST['code_snippet']) ? trim($_POST['code_snippet']) : '';
 $image_path = '';
@@ -64,9 +65,24 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     }
 }
 
-// Insert post into database
-$stmt = $conn->prepare("INSERT INTO posts (user_id, title, content, status, github_repo, code_snippet, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("issssss", $_SESSION['user_id'], $title, $content, $status, $github_repo, $code_snippet, $image_path);
+// Insert the post
+$stmt = $conn->prepare("
+    INSERT INTO posts (
+        user_id, title, content, status, privacy, github_repo, code_snippet, image_path, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+");
+
+$stmt->bind_param(
+    "isssssss", 
+    $_SESSION['user_id'], 
+    $title, 
+    $content, 
+    $status, 
+    $privacy, 
+    $github_repo, 
+    $code_snippet, 
+    $image_path
+);
 
 if ($stmt->execute()) {
     $_SESSION['success_message'] = "Goal created successfully!";

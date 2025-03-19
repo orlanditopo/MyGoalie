@@ -46,12 +46,21 @@ include dirname(__DIR__) . '/templates/header.php';
                 <small>Describe what you want to achieve with this goal.</small>
             </div>
             
-            <div class="input-field">
-                <label for="status">Status</label>
-                <select id="status" name="status">
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status" required>
                     <option value="planned">Planned</option>
                     <option value="in-progress">In Progress</option>
                     <option value="completed">Completed</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="privacy">Privacy:</label>
+                <select id="privacy" name="privacy" required>
+                    <option value="public">Public (everyone can see)</option>
+                    <option value="friends">Friends Only</option>
+                    <option value="private">Private (only me)</option>
                 </select>
             </div>
             
@@ -69,17 +78,9 @@ include dirname(__DIR__) . '/templates/header.php';
                         <p>To link your goals with GitHub projects, <a href="edit_profile.php">add your GitHub username</a> first.</p>
                     </div>
                 <?php else: ?>
-                    <div class="input-field">
-                        <label for="github_repo">GitHub Repository</label>
-                        <select id="github_repo" name="github_repo">
-                            <option value="">None</option>
-                            <?php foreach ($repositories as $repo): ?>
-                                <option value="<?php echo htmlspecialchars($repo['full_name']); ?>">
-                                    <?php echo htmlspecialchars($repo['name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <small>Connect this goal to one of your GitHub repositories.</small>
+                    <div class="form-group">
+                        <label for="github_repo">GitHub Repository (optional):</label>
+                        <input type="text" id="github_repo" name="github_repo" placeholder="username/repository">
                     </div>
                     
                     <div class="input-field">
