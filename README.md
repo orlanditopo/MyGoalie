@@ -12,6 +12,10 @@ A social platform for tracking and sharing your goals and achievements. Connect 
 - Profile customization
 - Responsive design for all devices
 
+## Author
+
+- orlanditopo
+
 ## Setup Instructions
 
 1. **Prerequisites**
